@@ -1,7 +1,25 @@
 const router = require("express").Router();
+const {
+  getAllTodos,
+  addTodo,
+  getOneTodoById,
+  updateTodo,
+  deleteOneTodo,
+} = require("../controllers/todosController");
 
-router.get("/", (req, res) => {
-  res.send("<h1>api route 1 working</h1>");
-});
+// @GET ALL TODOS
+router.get("/", getAllTodos);
+
+// @GET ONE TODO BY ID
+router.get("/:id", getOneTodoById);
+
+// @POST A TODO
+router.post("/", addTodo);
+
+// @UPDATE A TODO
+router.put("/:id", updateTodo);
+
+// @DELETE A TODO
+router.delete("/:id", deleteOneTodo);
 
 module.exports = router;

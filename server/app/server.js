@@ -11,6 +11,8 @@ const todoRoutes = require("./routes/todoRoutes");
 // middleware
 app.use(morgan("dev"));
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Database start
 db();
