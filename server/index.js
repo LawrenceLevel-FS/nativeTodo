@@ -1,10 +1,7 @@
-const { app, port } = require("./app/server");
+const { app, port, router } = require("./app/server");
 
-app.use("/", (req, res) => {
-  res.status(200).send("<h1>Hello World</h1>");
-});
+app.use("/", router);
 
-// http://localhost:3001/
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
