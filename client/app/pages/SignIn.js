@@ -1,24 +1,40 @@
 import { Text, View, TextInput, Button, Alert } from "react-native";
 import { AuthContext } from "../components/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
-export function SignIn({ navigation, route }) {
-  const { currentUser, setCurrentUser } = useContext(AuthContext);
+export function SignIn({ navigation }) {
+  const { setCurrentUser } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSignIn = () => {
-    navigation.navigate("Sign In");
-  };
-  const handleSignUp = () => {
-    navigation.navigate("Sign Up");
+  const handleSignIn = async () => {
+    const response = await fetch("http://localhost:3001/api/v1/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      setCurrentUser(data.user);
+      navigation.navigate("Todos");
+    } else {
+      alert("Login failed");
+    }
   };
 
   return (
     <View>
-      <Text>sign in</Text>
-      <TextInput name="email" placeholder="email" />
-      <TextInput name="password" placeholder="password" />
-      <Button onPress={handleSignIn} title="Sign in " />
-      <Button onPress={handleSignUp} title="Sign Up " />
+      <Text>Sign In</Text>
+      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
+      <TextInput
+        placeholder="Password"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+      <Button title="Sign In" onPress={handleSignIn} />
+      <Button title="Sign Up" onPress={() => navigation.navigate("Sign Up")} />
     </View>
   );
 }
