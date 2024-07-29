@@ -1,4 +1,9 @@
 const router = require("express").Router();
+const passport = require("passport");
+
+const passportService = require("../services/passport");
+const protectRoute = passport.authenticate("jwt", { session: false });
+
 const {
   getAllTodos,
   addTodo,
@@ -8,7 +13,7 @@ const {
 } = require("../controllers/todosController");
 
 // @GET ALL TODOS
-router.get("/", getAllTodos);
+router.get("/", protectRoute, getAllTodos);
 
 // @GET ONE TODO BY ID
 router.get("/:id", getOneTodoById);

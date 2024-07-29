@@ -8,6 +8,7 @@ const db = require("./db/database");
 const router = express.Router();
 // Importing routes
 const todoRoutes = require("./routes/todoRoutes");
+const authRouter = require("./routes/authRoutes");
 // middleware
 app.use(morgan("dev"));
 app.use(cors());
@@ -30,6 +31,7 @@ router.get("/", (req, res) => {
 
 // <<<< api Routes >>>>
 router.use("/api/v1/todos", todoRoutes);
+router.use("/api/v1/auth", authRouter);
 
 // setting port
 const port = process.env.PORT || 3001;
