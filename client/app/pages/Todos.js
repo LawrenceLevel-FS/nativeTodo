@@ -1,25 +1,35 @@
-import { Text, View, FlatList } from "react-native";
 import { useEffect, useState } from "react";
+import { Text, View, FlatList, Button } from "react-native";
+import { AuthContext } from "../components/AuthContext";
 import { TodoItem } from "../components/TodoItem";
 
-export function Todos() {
+export function Todos({ navigation }) {
+  const { currentUser, logout } = useContext(AuthContext);
   const [todos, setTodos] = useState([]);
 
   // Show all Todos
   const showTodos = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/v1/todos");
+      const response = await fetch("http://localhost:3001/api/v1/todos", {
+        headers: {
+          Authorization: `Bearer ${currentUser.token}`,
+        },
+      });
       const data = await response.json();
-      await setTodos(data.todos);
-      console.log(todos);
+      setTodos(data.todos);
+      console.log(data.todos);
     } catch (error) {
       console.log({ error: error.message });
     }
   };
 
   useEffect(() => {
-    showTodos();
-  }, []);
+    if (!currentUser) {
+      navigation.navigate("SignIn");
+    } else {
+      showTodos();
+    }
+  }, [currentUser]);
 
   const renderItem = ({ item }) => {
     return <TodoItem todos={item} />;
@@ -34,6 +44,7 @@ export function Todos() {
           keyExtractor={(item) => item._id}
         />
       </View>
+      <Button title="Logout" onPress={logout} />
     </View>
   );
 }

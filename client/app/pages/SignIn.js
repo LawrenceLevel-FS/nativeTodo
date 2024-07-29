@@ -4,21 +4,21 @@ import { useContext } from "react";
 
 export function SignIn({ navigation, route }) {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
-  setCurrentUser(false);
+
   const handleSignIn = () => {
-    if (currentUser) {
-      navigation.navigate("Todos");
-      console.log(currentUser);
-    } else {
-      Alert.alert("Please sign in");
-    }
+    navigation.navigate("Sign In");
   };
+  const handleSignUp = () => {
+    navigation.navigate("Sign Up");
+  };
+
   return (
     <View>
       <Text>sign in</Text>
       <TextInput name="email" placeholder="email" />
       <TextInput name="password" placeholder="password" />
       <Button onPress={handleSignIn} title="Sign in " />
+      <Button onPress={handleSignUp} title="Sign Up " />
     </View>
   );
 }
